@@ -332,6 +332,12 @@
                                     <i class="bi bi-cart-check"></i> Reportes de Compras
                                 </a>
                             </li>
+                            <li class="nav-item">
+                                <a class="nav-link {{ request()->routeIs('product_analysis.index') ? 'active' : '' }}"
+                                    href="{{ route('product_analysis.index') }}">
+                                    <i class="bi bi-graph-up"></i> Análisis de Productos
+                                </a>
+                            </li>
                             @if(Auth::user()->rol === 'gerente')
                             <li class="nav-item">
                                 <a class="nav-link {{ request()->routeIs('users.management') ? 'active' : '' }}"

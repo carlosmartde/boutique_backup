@@ -33,7 +33,25 @@
                             <input type="text" class="form-control datepicker" name="fecha" id="fecha" value="{{ $date }}">
                         </div>
                          
-                    
+                        <div class="col-md-3">
+                            <label for="month" class="form-label">Mes</label>
+                            <select name="month" id="month" class="form-select">
+                                <option value="">Seleccione un mes</option>
+                                <option value="1" {{ request('month') == '1' ? 'selected' : '' }}>Enero</option>
+                                <option value="2" {{ request('month') == '2' ? 'selected' : '' }}>Febrero</option>
+                                <option value="3" {{ request('month') == '3' ? 'selected' : '' }}>Marzo</option>
+                                <option value="4" {{ request('month') == '4' ? 'selected' : '' }}>Abril</option>
+                                <option value="5" {{ request('month') == '5' ? 'selected' : '' }}>Mayo</option>
+                                <option value="6" {{ request('month') == '6' ? 'selected' : '' }}>Junio</option>
+                                <option value="7" {{ request('month') == '7' ? 'selected' : '' }}>Julio</option>
+                                <option value="8" {{ request('month') == '8' ? 'selected' : '' }}>Agosto</option>
+                                <option value="9" {{ request('month') == '9' ? 'selected' : '' }}>Septiembre</option>
+                                <option value="10" {{ request('month') == '10' ? 'selected' : '' }}>Octubre</option>
+                                <option value="11" {{ request('month') == '11' ? 'selected' : '' }}>Noviembre</option>
+                                <option value="12" {{ request('month') == '12' ? 'selected' : '' }}>Diciembre</option>
+                            </select>
+                        </div>
+                        
                         <div class="col-md-3">
                             <label for="user_id" class="form-label">Usuario</label>
                             <select name="user_id" id="user_id" class="form-select">
@@ -59,7 +77,7 @@
     <div class="card shadow-sm border-0">
         <div class="card-body text-center">
             <h6 class="card-title text-muted">Total en ventas</h6>
-            <h4 class="text-primary">Q{{ number_format($sales->sum('total'), 2) }}</h4>
+            <h4 class="text-primary">Q{{ number_format($totalSales, 2) }}</h4>
         </div>
     </div>
 </div>
@@ -125,7 +143,7 @@
                         </table>
                         <!-- Paginación estilo Bootstrap -->
                 <div class="d-flex justify-content-center mt-4">
-                    {{ $sales->onEachSide(1)->links('vendor.pagination.bootstrap-5') }}
+                    {{ $sales->appends(request()->query())->onEachSide(1)->links('vendor.pagination.bootstrap-5') }}
                 </div>
                     </div>
                 </div>

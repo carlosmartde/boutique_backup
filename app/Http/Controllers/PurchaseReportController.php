@@ -79,33 +79,38 @@ class PurchaseReportController extends Controller
                     ->select('purchases.*', 'users.name as user_name')
                     ->join('users', 'purchases.user_id', '=', 'users.id');
         
-        // Filtro por usuario
         if ($userId !== 'all') {
             $query->where('purchases.user_id', $userId);
         }
         
-        switch ($period) {
-            case 'day':
-                $query->whereDate('purchases.created_at', $date);
-                break;
+        // Solo aplicar filtro de mes si el periodo es 'month'
+        if ($period === 'month' && request()->has('month') && request('month') !== '') {
+            $query->whereMonth('purchases.created_at', request('month'));
+            $year = Carbon::parse($date)->year;
+            $query->whereYear('purchases.created_at', $year);
+        } else {
+            switch ($period) {
+                case 'day':
+                    $query->whereDate('purchases.created_at', $date);
+                    break;
                 
-            case 'week':
-                $startOfWeek = Carbon::parse($date)->startOfWeek();
-                $endOfWeek = Carbon::parse($date)->endOfWeek();
-                $query->whereBetween('purchases.created_at', [$startOfWeek, $endOfWeek]);
-                break;
+                case 'week':
+                    $startOfWeek = Carbon::parse($date)->startOfWeek();
+                    $endOfWeek = Carbon::parse($date)->endOfWeek();
+                    $query->whereBetween('purchases.created_at', [$startOfWeek, $endOfWeek]);
+                    break;
                 
-            case 'month':
-                $startOfMonth = Carbon::parse($date)->startOfMonth();
-                $endOfMonth = Carbon::parse($date)->endOfMonth();
-                $query->whereBetween('purchases.created_at', [$startOfMonth, $endOfMonth]);
-                break;
+                case 'month':
+                    $startOfMonth = Carbon::parse($date)->startOfMonth();
+                    $endOfMonth = Carbon::parse($date)->endOfMonth();
+                    $query->whereBetween('purchases.created_at', [$startOfMonth, $endOfMonth]);
+                    break;
                 
-            case 'year':
-                $startOfYear = Carbon::parse($date)->startOfYear();
-                $endOfYear = Carbon::parse($date)->endOfYear();
-                $query->whereBetween('purchases.created_at', [$startOfYear, $endOfYear]);
-                break;
+                case 'year':
+                    $year = Carbon::parse($date)->year;
+                    $query->whereYear('purchases.created_at', $year);
+                    break;
+            }
         }
         
         return $query->orderBy('purchases.created_at', 'desc');
