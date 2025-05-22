@@ -8,7 +8,7 @@ use App\Services\EmailService;
 class ProductObserver
 {
     protected $emailService;
-    protected $lowStockThreshold = 5; // Umbral para considerar bajo stock
+    protected $lowStockThreshold = 10; // Umbral para considerar bajo stock
     
     public function __construct(EmailService $emailService)
     {
