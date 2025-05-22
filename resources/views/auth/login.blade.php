@@ -1,5 +1,4 @@
-@extends('layouts.app')
-
+@extends('layouts.app', ['Navbar' => true])
 @section('title', 'Iniciar Sesión')
 
 @section('content')
@@ -56,13 +55,15 @@
 
 <style>
     .card {
+        margin-top: 100px;
         border: none;
         border-radius: 15px;
         overflow: hidden;
+        background: var(--fondo-card);
     }
     
     .card-header {
-        background: linear-gradient(135deg, #3a86ff, #8338ec) !important;
+        background: var(--card-header-color);
         padding: 1.25rem 1.5rem;
         border-bottom: none;
     }
@@ -96,7 +97,7 @@
     }
     
     .btn-primary {
-        background: linear-gradient(135deg, #3a86ff, #8338ec);
+        background: var(--button-loggin-color);
         border: none;
         padding: 0.75rem 1.5rem;
         border-radius: 8px;
@@ -106,7 +107,7 @@
     }
     
     .btn-primary:hover {
-        background: linear-gradient(135deg, #2667cc, #6019d1);
+        background:var(--hover-color-button);
         transform: translateY(-2px);
         box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
     }

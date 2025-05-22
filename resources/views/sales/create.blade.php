@@ -4,127 +4,140 @@
 
 @section('styles')
 <style>
-    .sale-card {
-        border-radius: 12px;
-        overflow: hidden;
-    }
-    
-    .sale-header {
-        background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
-        color: white;
-        padding: 1.5rem;
-        border-radius: 10px 10px 0 0;
-    }
-    
-    .input-scan-wrapper {
-        position: relative;
-        margin-bottom: 2rem;
-    }
-    
-    .input-scan-wrapper::before {
-        content: '\F4E6'; /* Bootstrap icon for scan */
-        font-family: "bootstrap-icons";
-        position: absolute;
-        left: 15px;
-        top: 10px;
-        font-size: 1.2rem;
-        color: var(--primary-color);
-    }
-    
-    #product_code {
-        padding-left: 45px;
-        border-radius: 8px;
-        border: 1px solid #e0e0e0;
-        box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-        height: 50px;
-        transition: all 0.3s ease;
-    }
-    
-    #product_code:focus {
-        border-color: var(--primary-color);
-        box-shadow: 0 0 0 0.25rem rgba(58, 134, 255, 0.25);
-    }
-    
-    #sales-table {
-        box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-        border-radius: 8px;
-    }
-    
-    #sales-table thead th {
-        background-color: rgba(58, 134, 255, 0.1);
-        color: var(--dark-color);
-        font-weight: 600;
-        border: none;
-        padding: 12px 15px;
-    }
-    
-    #sales-table tbody td {
-        vertical-align: middle;
-        padding: 12px 15px;
-        border-color: #f0f2f5;
-    }
-    
-    .quantity {
-        border-radius: 6px;
-        border: 1px solid #e0e0e0;
-    }
-    
-    .btn-action {
-        border-radius: 50px;
-        padding: 0.4rem 1rem;
-        transition: all 0.3s;
-    }
-    
-    .btn-action:hover {
-        transform: translateY(-2px);
-    }
-    
-    .remove-product {
-        background-color: var(--accent-color);
-        border-color: var(--accent-color);
-    }
-    
-    .remove-product:hover {
-        background-color: #e0005c;
-        border-color: #e0005c;
-    }
-    
-    #complete-sale {
-        padding: 0.7rem 2rem;
-        border-radius: 50px;
-        font-weight: 600;
-        box-shadow: 0 4px 10px rgba(58, 134, 255, 0.3);
-        transition: all 0.3s;
-        background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
-        border: none;
-    }
-    
-    #complete-sale:hover {
-        transform: translateY(-3px);
-        box-shadow: 0 6px 15px rgba(58, 134, 255, 0.4);
-    }
-    
-    /* Animación para productos recién agregados */
-    @keyframes highlightRow {
-        0% { background-color: rgba(58, 134, 255, 0.2); }
-        100% { background-color: transparent; }
-    }
-    
-    .highlight-row {
-        animation: highlightRow 1.5s ease;
-    }
-    
-    /* Total section styling */
-    tfoot tr td {
-        background-color: #f8f9fa;
-        font-size: 1.1rem;
-    }
-    
-    #total {
-        color: var(--primary-color);
-        font-size: 1.2rem;
-    }
-</style>
+        .sale-card {
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .sale-header {
+            background: linear-gradient(135deg, var(--dark-primary-color), var(--secondary-color));
+            color: white;
+            padding: 1.5rem;
+            border-radius: 10px 10px 0 0;
+        }
+
+        .input-scan-wrapper {
+            position: relative;
+            margin-bottom: 2rem;
+        }
+
+        .input-scan-wrapper::before {
+            content: '\F4E6';
+            /* Bootstrap icon for scan */
+            font-family: "bootstrap-icons";
+            position: absolute;
+            left: 15px;
+            top: 10px;
+            font-size: 1.2rem;
+            color: var(--primary-color);
+        }
+
+        #product_code {
+            padding-left: 45px;
+            border-radius: 8px;
+            border: 1px solid #e0e0e0;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+            height: 50px;
+            transition: all 0.3s ease;
+        }
+
+        #product_code:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 0.25rem rgba(58, 134, 255, 0.25);
+        }
+
+        #sales-table {
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            border-radius: 8px;
+        }
+
+        #sales-table thead th {
+            background-color: rgba(58, 134, 255, 0.1);
+            color: var(--dark-color);
+            font-weight: 600;
+            border: none;
+            padding: 12px 15px;
+        }
+
+        #sales-table tbody td {
+            vertical-align: middle;
+            padding: 12px 15px;
+            border-color: #f0f2f5;
+        }
+
+        .quantity {
+            border-radius: 6px;
+            border: 1px solid #e0e0e0;
+        }
+
+        .btn-action {
+            border-radius: 50px;
+            padding: 0.4rem 1rem;
+            transition: all 0.3s;
+        }
+
+        .btn-action:hover {
+            transform: translateY(-2px);
+        }
+
+        .remove-product {
+            background-color: var(--accent-color);
+            border-color: var(--accent-color);
+        }
+
+        .remove-product:hover {
+            background-color: #e0005c;
+            border-color: #e0005c;
+        }
+
+        #complete-sale {
+            padding: 0.7rem 2rem;
+            border-radius: 50px;
+            font-weight: 600;
+            box-shadow: 0 4px 10px rgba(58, 134, 255, 0.3);
+            transition: all 0.3s;
+            background: linear-gradient(135deg, var(--dark-primary-color), var(--secondary-color));
+            border: none;
+        }
+
+        #complete-sale:hover {
+            transform: translateY(-3px);
+            background: var(--hover-color-button);
+            box-shadow: 0 6px 15px rgba(58, 134, 255, 0.4);
+        }
+
+        /* Animación para productos recién agregados */
+        @keyframes highlightRow {
+            0% {
+                background-color: rgba(58, 134, 255, 0.2);
+            }
+
+            100% {
+                background-color: transparent;
+            }
+        }
+
+        .highlight-row {
+            animation: highlightRow 1.5s ease;
+        }
+
+        /* Total section styling */
+        tfoot tr td {
+            background-color: #f8f9fa;
+            font-size: 1.1rem;
+        }
+
+        #total {
+            color: var(--primary-color);
+            font-size: 1.2rem;
+        }
+
+
+        .custom-select-wrapper {
+            position: relative;
+            width: 100%;
+        }
+    </style>
 @endsection
 
 @section('content')

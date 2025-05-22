@@ -14,23 +14,70 @@
     <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet">
     <!-- SweetAlert2 JS -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    
-    <!-- Estilos principales -->
+
     <style>
+        .custom-toggler {
+            border: none;
+            background: transparent;
+            color: white;
+            padding: 0.5rem 0.75rem;
+            transition: color 0.3s ease, transform 0.3s ease;
+        }
+
+        .custom-toggler:hover {
+            color: var(--sidebar-active);
+            /* O usa otro color que combine */
+            transform: scale(1.1);
+        }
+
         :root {
-            /* Nueva paleta de colores moderna */
-            --primary-color: #3a86ff;
+            /* paleta de colores */
             --primary-dark: #2667cc;
             --secondary-color: #8338ec;
             --accent-color: #ff006e;
             --light-color: #f8f9fa;
             --dark-color: #212529;
             --background-color: #f0f2f5;
-            --card-background: #ffffff;
+
+            --gris-claro: linear-gradient(135deg, rgba(255, 255, 255, 1) 0%, rgba(248, 249, 250, 1) 100%);
+
+
+
+            /*my colors*/
+            --dark-primary-color: #303F9F;
+            --hover-color-button: linear-gradient(135deg, #2667cc, #6019d1);
+
+            /*card welcome*/
+            --fondo-card: var(--gris-claro);
+
+
+            /*login*/
+            --card-header-color: var(--dark-primary-color);
+            --button-loggin-color: var(--dark-primary-color);
+            --card-background: var(--gris-claro);
+            --fondo-card-login: var(--gris-claro);
+
+
+            /*navbar*/
+
+            --navbar-color: var(--dark-primary-color);
+
+
+            /*sidebar*/
+
             --sidebar-bg: #212529;
             --sidebar-text: #f8f9fa;
-            --sidebar-hover: #FFAFCC;   /*Cambiar este color si no convence*/
-            --sidebar-active: #ff006e;
+            --sidebar-active: #ffbb3e;
+            --sidebar-text-hover: #ffbb3e;
+            --buttons-sidebar-hover: #ffbb3e;
+
+
+            --sidebar-color: #3F51B5;
+
+            /* dashboard */
+            --buttons-card-color: #ffbb3e;
+
+
         }
 
         body {
@@ -38,21 +85,20 @@
             flex-direction: column;
             min-height: 100vh;
             background-color: var(--background-color);
-            padding-top: 56px; /* Altura de la navbar */
-            margin-bottom: 44px; /* Altura del footer */
+            padding-top: 56px;
+            /* Altura de la navbar */
         }
 
         .content-wrapper {
             display: flex;
             flex: 1;
             position: relative;
-            min-height: calc(100vh - 56px - 44px); 
-            padding-bottom: 44px; /* Espacio para el footer */
+            min-height: calc(100vh - 56px - 44px);
         }
 
         .sidebar {
             width: 250px;
-            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color)) !important;
+            background: var(--sidebar-color);
             box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
             position: fixed;
             top: 56px;
@@ -61,7 +107,8 @@
             z-index: 100;
             padding: 20px 0;
             overflow-y: auto;
-            height: calc(100vh - 5px - 44px); /* Altura ajustada para dejar espacio al footer */
+            height: calc(100vh - 5px - 44px);
+            /* Altura ajustada para dejar espacio al footer */
         }
 
         .sidebar .nav-link {
@@ -73,7 +120,7 @@
         }
 
         .sidebar .nav-link:hover {
-            background-color: var(--sidebar-hover);
+            background-color: var(--buttons-sidebar-hover);
             color: white;
             transform: translateX(5px);
         }
@@ -101,7 +148,7 @@
         }
 
         .sidebar-header:hover {
-            color: var(--sidebar-hover);
+            color: var(--sidebar-text-hover);
             transform: translateX(5px);
         }
 
@@ -120,18 +167,16 @@
         }
 
         footer {
-            height: 44px; /* Altura fija para el footer */
+            height: 44px;
+            /* Altura fija para el footer */
             background-color: var(--dark-color) !important;
             color: var(--light-color) !important;
             width: 100%;
-            z-index: 101; /* Asegura que esté por encima de otros elementos */
+            z-index: 101;
+            /* Asegura que esté por encima de otros elementos */
             display: flex;
             align-items: center;
             justify-content: center;
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            z-index: 1030;
         }
 
         /* Estilos para las cards */
@@ -140,8 +185,16 @@
             border-radius: 10px;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
             transition: transform 0.3s ease, box-shadow 0.3s ease;
-            background-color: var(--card-background);
+            background: var(--fondo-card-login);
             overflow: hidden;
+        }
+
+        .card-header {
+            background: linear-gradient(135deg, var( --dark-primary-color), var(--secondary-color));
+            color: white;
+            font-weight: bold;
+            padding: 1rem;
+            border-bottom: none;
         }
 
         .card:hover {
@@ -151,8 +204,8 @@
 
         /* Estilos para los botones */
         .btn-primary {
-            background-color: var(--primary-color);
-            border-color: var(--primary-color);
+            background: var(--buttons-card-color);
+            border-color: transparent;
         }
 
         .btn-primary:hover {
@@ -161,13 +214,16 @@
         }
 
         /* Estilos para la navbar */
-        .navbar-dark {
-            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color)) !important;
+        .style-navbar {
+            background: var(--navbar-color);
+
+
         }
 
         .navbar-brand {
             font-weight: bold;
             letter-spacing: 1px;
+            color: white;
         }
 
         /* Estilos responsivos */
@@ -192,15 +248,15 @@
             }
         }
     </style>
-    
-    <!-- Estilos del select personalizado -->
     <style>
         /* Estilos para el select personalizado */
         .custom-select-wrapper {
-            position: relative;
-            width: 100%;
-        }
-
+    position: relative;
+    width: 100%;
+    display: flex;
+    align-items: stretch; /* asegura que tenga el mismo alto que el input-group */
+}
+ 
         .custom-select-trigger {
             border: 1px solid #ced4da;
             padding: 0.375rem 0.75rem;
@@ -215,17 +271,16 @@
 
         .custom-select-options {
             position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            z-index: 99999;
             background: white;
             border: 1px solid #ddd;
             border-radius: 0.25rem;
-            height: auto;
-            max-height: 200px;
+            max-height: 250px;
             overflow-y: auto;
             display: none;
-            z-index: 1031;
-            scrollbar-width: thin;
-            scrollbar-color: #3a86ff #f0f2f5;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
         }
 
@@ -234,11 +289,8 @@
         }
 
         .custom-select-option {
-            padding: 0.75rem 1rem;
+            padding: 0.5rem 0.75rem;
             cursor: pointer;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
         }
 
         .custom-select-option:hover {
@@ -248,46 +300,30 @@
         .custom-select-option.selected {
             background-color: #e9ecef;
         }
-
-        /* Estilo para la barra de scroll */
-        .custom-select-options::-webkit-scrollbar {
-            width: 8px;
-        }
-
-        .custom-select-options::-webkit-scrollbar-track {
-            background: #f0f2f5;
-            border-radius: 4px;
-        }
-
-        .custom-select-options::-webkit-scrollbar-thumb {
-            background: #3a86ff;
-            border-radius: 4px;
-        }
-
-        .custom-select-options::-webkit-scrollbar-thumb:hover {
-            background: #2667cc;
-        }
     </style>
-    
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
     @yield('styles')
 </head>
 
 <body>
+    <!-- Verifica si estamos en la página de welcome para ajustar clases CSS -->
     @php
         $isWelcomePage = request()->route()->getName() === 'welcome' || request()->path() === '/' || request()->route()->getName() === 'login';
     @endphp
 
-    <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+    <nav class="navbar navbar-expand-lg style-navbar fixed-top">
         <div class="container-fluid">
-            <button class="navbar-toggler" type="button" id="sidebarToggle" style="position: absolute; left: 15px;">
-                <span class="navbar-toggler-icon"></span>
-            </button>
+            @if (!isset($Navbar))
+                <button class="navbar-toggler custom-toggler" type="button" id="toggleSidebarBtn">
+                    <i class="bi bi-list fs-3" id="toggleIcon"></i>
+                </button>
+            @endif
             <a class="navbar-brand mx-auto" href="/dashboard">MINI-MARKET</a>
         </div>
     </nav>
 
     <div class="content-wrapper">
+        <!-- Sidebar - solo se muestra si no es la página de welcome y el usuario está autenticado -->
         @auth
             @if(!$isWelcomePage)
                 <div class="sidebar">
@@ -295,11 +331,11 @@
                         <i class="bi bi-house-door"></i> Menu Principal
                     </a>
                     <ul class="nav flex-column">
-                        @if(Auth::user()->rol === 'admin' || Auth::user()->rol === 'gerente')
+                        @if(Auth::user()->rol === 'admin')
                             <li class="nav-item">
                                 <a class="nav-link {{ request()->routeIs('products.create') ? 'active' : '' }}"
                                     href="{{ route('products.create') }}">
-                                    <i class="bi bi-bag-plus"></i> Nuevo Producto
+                                    <i class="bi bi-bag-plus"></i> Ingresar Producto
                                 </a>
                             </li>
                             <li class="nav-item">
@@ -317,32 +353,13 @@
                             <li class="nav-item">
                                 <a class="nav-link {{ request()->routeIs('inventario.mostrar-formulario') ? 'active' : '' }}"
                                     href="{{ route('inventario.mostrar-formulario') }}">
-                                    <i class="bi bi-plus-square"></i> Registrar Compra
+                                    <i class="bi bi-plus-square"></i> Registra Compra
                                 </a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link {{ request()->routeIs('reports.index') ? 'active' : '' }}"
                                     href="{{ route('reports.index') }}">
-                                    <i class="bi bi-file-earmark-bar-graph"></i> Reportes de Ventas
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link {{ request()->routeIs('purchase_reports.index') ? 'active' : '' }}"
-                                    href="{{ route('purchase_reports.index') }}">
-                                    <i class="bi bi-cart-check"></i> Reportes de Compras
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link {{ request()->routeIs('product_analysis.index') ? 'active' : '' }}"
-                                    href="{{ route('product_analysis.index') }}">
-                                    <i class="bi bi-graph-up"></i> Análisis de Productos
-                                </a>
-                            </li>
-                            @if(Auth::user()->rol === 'gerente')
-                            <li class="nav-item">
-                                <a class="nav-link {{ request()->routeIs('users.management') ? 'active' : '' }}"
-                                    href="{{ route('users.management') }}">
-                                    <i class="bi bi-people"></i> Gestión de Usuarios
+                                    <i class="bi bi-file-earmark-bar-graph"></i> Ver Reportes
                                 </a>
                             </li>
                             <li class="nav-item">
@@ -351,14 +368,13 @@
                                     <i class="bi bi-person-plus"></i> Crear Usuario
                                 </a>
                             </li>
-                            @endif
                         @endif
                         <li class="nav-item mt-3">
                             <form action="{{ route('logout') }}" method="POST" class="px-3">
                                 @csrf
-                                <button type="submit" class="btn btn-outline-danger w-100" style="border-width: 2px; color: white;">
+                                <button type="submit" class="btn btn-outline-danger w-100">
                                     <i class="bi bi-box-arrow-right"></i> Cerrar Sesión
-                                </button>                                                             
+                                </button>
                             </form>
                         </li>
                     </ul>
@@ -366,6 +382,7 @@
             @endif
         @endauth
 
+        <!-- Main content - ajusta las clases según si es la página de welcome -->
         <main class="main-content {{ $isWelcomePage ? 'w-100 m-0' : '' }}">
             @yield('content')
         </main>
@@ -375,10 +392,8 @@
         <p class="m-0">MINI-MARKET &copy; {{ date('Y') }}</p>
     </footer>
 
-    <!-- Scripts -->
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
-        // Toggle sidebar script
+        // Toggle sidebar on mobile
         document.addEventListener('DOMContentLoaded', function () {
             const sidebarToggle = document.getElementById('sidebarToggle');
             const sidebar = document.querySelector('.sidebar');
@@ -392,9 +407,9 @@
             }
         });
     </script>
-    
+
+    <!-- Scripts restantes sin cambios -->
     <script>
-        // Select personalizado script
         document.addEventListener('DOMContentLoaded', function () {
             // Reemplazar los selects problemáticos
             document.querySelectorAll('.form-select').forEach(select => {
@@ -421,7 +436,8 @@
                 options.className = 'custom-select-options';
                 wrapper.appendChild(options);
 
-                wrapper.appendChild(options);
+                // Mover al final del body para asegurar que esté por encima de todo
+                document.body.appendChild(options);
 
                 // Poblar opciones
                 Array.from(select.options).forEach((option, index) => {
@@ -463,40 +479,8 @@
                         // Posicionar el dropdown correctamente
                         const rect = trigger.getBoundingClientRect();
                         options.style.width = rect.width + 'px';
-                        const parent = trigger.closest('.custom-select-wrapper');
-                        const rect = trigger.getBoundingClientRect();
-                        const viewportHeight = window.innerHeight;
-                        const footerHeight = 60; // altura aproximada del footer
-                        
-                        options.style.position = 'fixed';
-                        options.style.width = `${rect.width}px`;
-                        options.style.left = `${rect.left}px`;
-                        
-                        // Calcular espacio disponible arriba y abajo
-                        const spaceBelow = viewportHeight - rect.bottom - footerHeight;
-                        const spaceAbove = rect.top;
-                        
-                        if (spaceBelow >= 200) {
-                            // Si hay suficiente espacio abajo
-                            options.style.top = `${rect.bottom + window.scrollY}px`;
-                            options.style.maxHeight = `${Math.min(200, spaceBelow)}px`;
-                        } else if (spaceAbove >= 200) {
-                            // Si hay más espacio arriba
-                            options.style.bottom = `${viewportHeight - rect.top}px`;
-                            options.style.top = 'auto';
-                            options.style.maxHeight = `${Math.min(200, spaceAbove)}px`;
-                        } else {
-                            // Si no hay suficiente espacio en ninguna dirección, usar el espacio más grande
-                            const maxSpace = Math.max(spaceBelow, spaceAbove) - 20;
-                            if (spaceBelow >= spaceAbove) {
-                                options.style.top = `${rect.bottom + window.scrollY}px`;
-                                options.style.maxHeight = `${maxSpace}px`;
-                            } else {
-                                options.style.bottom = `${viewportHeight - rect.top}px`;
-                                options.style.top = 'auto';
-                                options.style.maxHeight = `${maxSpace}px`;
-                            }
-                        }
+                        options.style.left = rect.left + 'px';
+                        options.style.top = (rect.bottom + window.scrollY) + 'px';
                     }
                 });
 
@@ -511,20 +495,41 @@
             });
         });
     </script>
-
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/es.js"></script>
 
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             flatpickr('.datepicker', {
-                locale: 'es',
-                dateFormat: 'Y-m-d',
+                locale: 'es', // Establece el idioma a español
+                dateFormat: 'Y-m-d', // Puedes ajustar el formato de fecha según lo que necesites
             });
         });
     </script>
+    <script>
+        const toggleBtn = document.getElementById('toggleSidebarBtn');
+        const sidebar = document.querySelector('.sidebar');
+        const mainContent = document.querySelector('.main-content');
+        const toggleIcon = document.getElementById('toggleIcon');
 
-    <script src="{{ asset('js/user-management.js') }}"></script>
+        toggleBtn.addEventListener('click', () => {
+            sidebar.classList.toggle('show');
+            mainContent.classList.toggle('sidebar-open');
+
+            // Cambiar icono
+            if (sidebar.classList.contains('show')) {
+                toggleIcon.classList.remove('bi-list');
+                toggleIcon.classList.add('bi-x-lg');
+            } else {
+                toggleIcon.classList.remove('bi-x-lg');
+                toggleIcon.classList.add('bi-list');
+            }
+        });
+    </script>
+
+
+
     @yield('scripts')
 </body>
+
 </html>
