@@ -362,12 +362,14 @@
                                     <i class="bi bi-file-earmark-bar-graph"></i> Ver Reportes
                                 </a>
                             </li>
+
                             <li class="nav-item">
                                 <a class="nav-link {{ request()->routeIs('register') ? 'active' : '' }}"
                                     href="{{ route('register') }}">
                                     <i class="bi bi-person-plus"></i> Crear Usuario
                                 </a>
                             </li>
+                          
                         @endif
                         <li class="nav-item mt-3">
                             <form action="{{ route('logout') }}" method="POST" class="px-3">
