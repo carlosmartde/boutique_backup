@@ -11,7 +11,7 @@ class UserManagementController extends Controller
 {
     public function index()
     {
-        if (Auth::user()->rol === 'gerente') {
+        if (Auth::user()->rol === 'gerente' || Auth::user()->rol === 'admin') {
             $users = User::all();
             return view('users.management', compact('users'));
         }

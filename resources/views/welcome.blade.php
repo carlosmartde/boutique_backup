@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.app', ['Navbar' => true])
 
 @section('title', 'Bienvenido')
 
@@ -31,7 +31,8 @@
 
 <style>
     .welcome-content {
-        background: linear-gradient(135deg, rgba(255,255,255,1) 0%, rgba(248,249,250,1) 100%);
+        margin-top: 69px;
+        background: var(--fondo-card);
         transition: transform 0.3s ease;
     }
     
@@ -40,7 +41,8 @@
     }
     
     .btn-primary {
-        background: linear-gradient(135deg, #3a86ff, #8338ec);
+        background:  var(--button-loggin-color);
+    
         border: none;
         transition: all 0.3s;
     }
@@ -48,7 +50,7 @@
     .btn-primary:hover {
         transform: translateY(-2px);
         box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
-        background: linear-gradient(135deg, #2667cc, #6019d1);
+        background: var(--hover-color-button);
     }
 </style>
 @endsection
