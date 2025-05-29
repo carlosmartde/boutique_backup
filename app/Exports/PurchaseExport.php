@@ -45,9 +45,13 @@ class PurchaseExport implements FromCollection, WithHeadings, WithMapping, WithS
                     $query->whereDate('purchases.created_at', $this->date);
                     break;
                 case 'week':
-                    $startOfWeek = Carbon::parse($this->date)->startOfWeek();
-                    $endOfWeek = Carbon::parse($this->date)->endOfWeek();
-                    $query->whereBetween('purchases.created_at', [$startOfWeek, $endOfWeek]);
+                    $targetDate = Carbon::parse($this->date);
+                    $startOfWeek = $targetDate->copy()->startOfWeek(Carbon::MONDAY);
+                    $endOfWeek = $targetDate->copy()->endOfWeek(Carbon::SUNDAY);
+                    $query->whereBetween('purchases.created_at', [
+                        $startOfWeek->startOfDay(),
+                        $endOfWeek->endOfDay()
+                    ]);
                     break;
                 case 'month':
                     $startOfMonth = Carbon::parse($this->date)->startOfMonth();

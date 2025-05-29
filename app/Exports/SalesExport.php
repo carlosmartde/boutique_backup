@@ -12,56 +12,32 @@ use Carbon\Carbon;
 
 class SalesExport implements FromCollection, WithHeadings, WithMapping, WithStyles
 {
-    protected $period;
-    protected $date;
+    protected $startDate;
+    protected $endDate;
     protected $userId;
-    protected $month;
 
-    public function __construct($period, $date, $userId, $month = null)
+    public function __construct($startDate, $endDate, $userId)
     {
-        $this->period = $period;
-        $this->date = $date;
+        $this->startDate = $startDate;
+        $this->endDate = $endDate;
         $this->userId = $userId;
-        $this->month = $month;
     }
 
     public function collection()
     {
         $query = Sale::with(['user', 'details.product'])
             ->select('sales.*', 'users.name as user_name')
-            ->join('users', 'sales.user_id', '=', 'users.id');
+            ->join('users', 'sales.user_id', '=', 'users.id')
+            ->whereBetween('sales.created_at', [
+                $this->startDate . ' 00:00:00',
+                $this->endDate . ' 23:59:59'
+            ]);
 
         if ($this->userId !== 'all') {
             $query->where('sales.user_id', $this->userId);
         }
 
-        if ($this->period === 'month' && !empty($this->month)) {
-            $query->whereMonth('sales.created_at', $this->month);
-            $year = Carbon::parse($this->date)->year;
-            $query->whereYear('sales.created_at', $year);
-        } else {
-            switch ($this->period) {
-                case 'day':
-                    $query->whereDate('sales.created_at', $this->date);
-                    break;
-                case 'week':
-                    $startOfWeek = Carbon::parse($this->date)->startOfWeek();
-                    $endOfWeek = Carbon::parse($this->date)->endOfWeek();
-                    $query->whereBetween('sales.created_at', [$startOfWeek, $endOfWeek]);
-                    break;
-                case 'month':
-                    $startOfMonth = Carbon::parse($this->date)->startOfMonth();
-                    $endOfMonth = Carbon::parse($this->date)->endOfMonth();
-                    $query->whereBetween('sales.created_at', [$startOfMonth, $endOfMonth]);
-                    break;
-                case 'year':
-                    $year = Carbon::parse($this->date)->year;
-                    $query->whereYear('sales.created_at', $year);
-                    break;
-            }
-        }
-
-        return $query->get();
+        return $query->orderBy('sales.created_at', 'desc')->get();
     }
 
     public function headings(): array

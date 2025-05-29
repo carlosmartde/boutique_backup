@@ -208,22 +208,25 @@
 @endsection
 
 @section('scripts')
+@include('invoices.modal')
 <script>
         function sendSaleToMiddleware(saleData) {
             const payload = {
+                nombreNegocio: 'Mini-Market',
+                direccion: 'Dirección del Negocio',
+                telefono: 'Tel: 123456789',
                 productos: saleData.products.map(product => ({
                     nombre: product.name,
                     cantidad: product.quantity,
                     precio: product.price
                 })),
+                total: saleData.total,
                 impresora: {
                     ip: "192.168.1.200",
                     puerto: 9100
                 }
             };
             console.log("Datos a enviar al middleware:", payload);
-
-
 
             fetch('http://localhost:3000/imprimir', {
                 method: 'POST',
@@ -234,11 +237,68 @@
             })
                 .then(response => response.json())
                 .then(data => {
-                    console.log('Respuesta del middleware:', data);
+                    console.log('Impresión exitosa:', data);
                 })
                 .catch(error => {
-                    console.error('Error al enviar los datos al middleware:', error);
+                    console.error('Error al imprimir:', error);
                 });
+        }
+
+        function submitInvoiceForm(shouldPrint = false) {
+            const formData = new FormData(document.getElementById('invoiceForm'));
+            
+            fetch('/invoices', {
+                method: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify({
+                    sale_id: formData.get('sale_id'),
+                    customer_name: formData.get('customer_name'),
+                    customer_nit: formData.get('customer_nit'),
+                    customer_address: formData.get('customer_address'),
+                    customer_phone: formData.get('customer_phone'),
+                    customer_email: formData.get('customer_email'),
+                    payment_method: formData.get('payment_method'),
+                    print: shouldPrint
+                })
+            })
+            .then(response => {
+                if (response.headers.get('content-type').includes('application/pdf')) {
+                    return response.blob();
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data instanceof Blob) {
+                    // If it's a PDF, open it in a new window
+                    const pdfUrl = URL.createObjectURL(data);
+                    window.open(pdfUrl, '_blank');
+                } else {
+                    // Show success message
+                    Swal.fire({
+                        title: 'Éxito',
+                        text: 'Factura generada correctamente',
+                        icon: 'success',
+                        confirmButtonText: 'OK',
+                        confirmButtonColor: '#3a86ff'
+                    });
+                }
+                // Close the modal
+                $('#invoiceModal').modal('hide');
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                Swal.fire({
+                    title: 'Error',
+                    text: 'Error al generar la factura',
+                    icon: 'error',
+                    confirmButtonText: 'OK',
+                    confirmButtonColor: '#3a86ff'
+                });
+            });
         }
 
         document.addEventListener('DOMContentLoaded', function () {
@@ -246,6 +306,7 @@
             const salesTable = document.getElementById('sales-table').getElementsByTagName('tbody')[0];
             const completeSaleBtn = document.getElementById('complete-sale');
             const totalElement = document.getElementById('total');
+            const invoiceModal = new bootstrap.Modal(document.getElementById('invoiceModal'));
             let products = [];
 
             // Escanear código de producto
@@ -478,26 +539,29 @@
                             .then(response => response.json())
                             .then(data => {
                                 if (data.success) {
-                                    // Llamada al middleware para imprimir
-                                    sendSaleToMiddleware(saleData);
-
+                                    // Mostrar mensaje de éxito brevemente
                                     Swal.fire({
                                         title: '¡Venta exitosa!',
                                         text: 'La venta ha sido registrada correctamente',
                                         icon: 'success',
-                                        confirmButtonText: 'OK',
-                                        confirmButtonColor: '#3a86ff',
-                                        timer: 2000,
-                                        timerProgressBar: true,
-                                    }).then(() => {
+                                        timer: 1500,
+                                        showConfirmButton: false
+                                    }).then(() => {                                    // Mostrar modal de facturación
+                                    document.getElementById('sale_id').value = data.sale.id;
+                                    document.getElementById('sale_total').value = saleData.total;
+                                    invoiceModal.show();
+                                        
                                         // Limpiar tabla
                                         salesTable.innerHTML = '';
                                         products = [];
                                         updateTotal();
-                                        productCodeInput.focus();
-
-                                        // Recargar la página después de finalizar la venta
-                                        window.location.reload();
+                                        
+                                        // Enviar a imprimir silenciosamente
+                                        try {
+                                            sendSaleToMiddleware(saleData);
+                                        } catch (error) {
+                                            console.error('Error de impresión:', error);
+                                        }
                                     });
                                 } else {
                                     Swal.fire({
@@ -521,6 +585,14 @@
                             });
                     }
                 });
+            });
+
+            document.getElementById('saveInvoice').addEventListener('click', () => submitInvoiceForm(false));
+            document.getElementById('saveAndPrintInvoice').addEventListener('click', () => submitInvoiceForm(true));
+
+            // Reset form when modal is closed
+            document.getElementById('invoiceModal').addEventListener('hidden.bs.modal', function () {
+                document.getElementById('invoiceForm').reset();
             });
         });
     </script>
