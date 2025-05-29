@@ -46,9 +46,14 @@ class PurchaseReportController extends Controller
                     $query->whereDate('purchases.created_at', $date);
                     break;
                 case 'week':
-                    $startOfWeek = Carbon::parse($date)->startOfWeek();
-                    $endOfWeek = Carbon::parse($date)->endOfWeek();
-                    $query->whereBetween('purchases.created_at', [$startOfWeek, $endOfWeek]);
+                    // Usar la fecha proporcionada como referencia para obtener la semana correcta
+                    $targetDate = Carbon::parse($date);
+                    $startOfWeek = $targetDate->copy()->startOfWeek(Carbon::MONDAY);
+                    $endOfWeek = $targetDate->copy()->endOfWeek(Carbon::SUNDAY);
+                    $query->whereBetween('purchases.created_at', [
+                        $startOfWeek->startOfDay(),
+                        $endOfWeek->endOfDay()
+                    ]);
                     break;
                 case 'month':
                     $startOfMonth = Carbon::parse($date)->startOfMonth();

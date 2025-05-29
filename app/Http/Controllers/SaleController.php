@@ -121,7 +121,11 @@ class SaleController extends Controller
 
             DB::commit();
 
-            return response()->json(['success' => true, 'message' => 'Venta realizada exitosamente']);
+            return response()->json([
+                'success' => true,
+                'message' => 'Venta realizada exitosamente',
+                'sale' => $sale
+            ]);
         } catch (\Exception $e) {
             DB::rollback();
             Log::error('Error al procesar la venta: ' . $e->getMessage());

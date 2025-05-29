@@ -210,4 +210,7 @@ Route::middleware(['auth'])->group(function () {
             return app()->call([app(ProductReportController::class), 'index'], ['request' => $request]);
         })->name('product_analysis.index');
     });
+
+    // Rutas para la facturación
+    Route::resource('invoices', App\Http\Controllers\InvoiceController::class)->only(['index', 'store', 'show']);
 });

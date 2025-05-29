@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\SaleDetail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
 
 class ProductReportController extends Controller
 {
@@ -29,14 +30,20 @@ class ProductReportController extends Controller
 
         // Aplicar filtros de fecha
         if ($startDate && $endDate) {
-            $query->whereBetween('sales.created_at', [$startDate, $endDate]);
+            $query->whereBetween('sales.created_at', [$startDate . ' 00:00:00', $endDate . ' 23:59:59']);
         } else {
             switch ($period) {
                 case 'day':
                     $query->whereDate('sales.created_at', today());
                     break;
                 case 'week':
-                    $query->whereBetween('sales.created_at', [now()->startOfWeek(), now()->endOfWeek()]);
+                    $targetDate = now();
+                    $startOfWeek = $targetDate->copy()->startOfWeek(Carbon::MONDAY);
+                    $endOfWeek = $targetDate->copy()->endOfWeek(Carbon::SUNDAY);
+                    $query->whereBetween('sales.created_at', [
+                        $startOfWeek->startOfDay(),
+                        $endOfWeek->endOfDay()
+                    ]);
                     break;
                 case 'month':
                     $query->whereMonth('sales.created_at', now()->month)
@@ -61,25 +68,18 @@ class ProductReportController extends Controller
             ->get();
 
         // Obtener productos con mayor ingreso
-        $topRevenueProducts = (clone $query)
+        $topRevenue = (clone $query)
             ->orderBy('total_sales', 'desc')
-            ->limit(10)
-            ->get();
-
-        // Obtener productos con menor ingreso
-        $leastRevenueProducts = (clone $query)
-            ->orderBy('total_sales', 'asc')
             ->limit(10)
             ->get();
 
         return view('reports.product_analysis', compact(
             'topProducts',
             'leastProducts',
-            'topRevenueProducts',
-            'leastRevenueProducts',
+            'topRevenue',
             'period',
             'startDate',
             'endDate'
         ));
     }
-} 
+}
