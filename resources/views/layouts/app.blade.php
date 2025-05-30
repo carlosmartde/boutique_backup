@@ -307,7 +307,7 @@
                             <li class="nav-item">
                                 <a class="nav-link {{ request()->routeIs('sales.create') ? 'active' : '' }}"
                                     href="{{ route('sales.create') }}">
-                                    <i class="bi bi-cart-plus"></i>Registrar Venta
+                                    <i class="bi bi-cart-plus"></i>Registrar Ventas
                                 </a>
                             </li>
                             <li class="nav-item">
@@ -319,7 +319,7 @@
                             <li class="nav-item">
                                 <a class="nav-link {{ request()->routeIs('inventario.mostrar-formulario') ? 'active' : '' }}"
                                     href="{{ route('inventario.mostrar-formulario') }}">
-                                    <i class="bi bi-plus-square"></i> Registrar Compra
+                                    <i class="bi bi-plus-square"></i> Registrar Compras
                                 </a>
                             </li>
                             <li class="nav-item">
