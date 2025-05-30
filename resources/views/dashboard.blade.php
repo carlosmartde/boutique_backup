@@ -149,6 +149,22 @@
                 </div>
             </div>
         </div>
+
+        <!-- Card para el Generador de Códigos de Barras -->
+        <div class="col-md-4 mb-4">
+            <div class="card h-100">
+                <div class="card-body text-center p-4">
+                    <div class="icon-wrapper mb-3">
+                        <i class="bi bi-upc-scan fs-1 text-primary"></i>
+                    </div>
+                    <h5 class="card-title fw-bold">Códigos de Barras</h5>
+                    <p class="card-text text-muted">Genera e imprime códigos de barras</p>
+                    <a href="{{ route('barcodes.index') }}" class="btn btn-primary w-100">
+                        <i class="bi bi-printer me-2"></i>Generar Códigos
+                    </a>
+                </div>
+            </div>
+        </div>
         
         <div class="col-md-4 mb-4">
             <div class="card h-100">

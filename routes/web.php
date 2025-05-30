@@ -6,6 +6,7 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\SaleController;
 use App\Http\Controllers\InventoryController;
 use App\Http\Controllers\ReportController;
+use App\Http\Controllers\BarcodeController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Http\Controllers\UserManagementController;
@@ -49,6 +50,12 @@ Route::middleware(['auth'])->group(function () {
     
     // Rutas accesibles para todos los usuarios autenticados
     Route::get('/inventory/export', [InventoryController::class, 'export'])->name('inventory.export');
+    
+    // Rutas para el generador de códigos de barras
+    Route::get('/barcodes', [BarcodeController::class, 'index'])->name('barcodes.index');
+    Route::get('/barcodes/random', [BarcodeController::class, 'generateRandom'])->name('barcodes.generate-random');
+    Route::post('/barcodes/pdf', [BarcodeController::class, 'generatePDF'])->name('barcodes.generate-pdf');
+
     Route::get('/product/code/{code}', [SaleController::class, 'searchProductByCode']);
     Route::get('/sales/search/{code}', [SaleController::class, 'searchProductByCode']);
     Route::get('/sales/create', [SaleController::class, 'create'])->name('sales.create');

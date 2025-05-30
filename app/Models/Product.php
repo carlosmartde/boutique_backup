@@ -21,6 +21,17 @@ class Product extends Model
     {
         return $this->hasMany(SaleDetail::class);
     }
+
+    /**
+     * Verifica si un código de barras ya existe
+     *
+     * @param string $barcode
+     * @return bool
+     */
+    public static function barcodeExists($barcode)
+    {
+        return static::where('code', $barcode)->exists();
+    }
 }
 
 
