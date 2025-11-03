@@ -31,5 +31,5 @@ RUN chown -R www-data:www-data /var/www/html \
 # Exponer puerto para PHP-FPM (Railway lo puede mapear)
 EXPOSE 9000
 
-# Comando por defecto
-CMD ["php-fpm"]
+# Servir Laravel en el puerto que Railway asigna
+CMD php -S 0.0.0.0:${PORT} -t public
