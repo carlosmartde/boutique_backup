@@ -1,4 +1,4 @@
-# Usar PHP 8.2 FPM
+# ---- Etapa base ----
 FROM php:8.2-fpm
 
 # Instalar dependencias del sistema
@@ -28,8 +28,9 @@ RUN composer install --optimize-autoloader --no-scripts --no-interaction
 RUN chown -R www-data:www-data /var/www/html \
     && chmod -R 755 /var/www/html/storage /var/www/html/bootstrap/cache
 
-# Exponer puerto para PHP-FPM (Railway lo puede mapear)
-EXPOSE 9000
+# Exponer puerto (Railway lo asigna automáticamente)
+EXPOSE 8080
 
-# Servir Laravel en el puerto que Railway asigna
-CMD php -S 0.0.0.0:${PORT} -t public
+# ---- Servidor de Laravel ----
+# Usamos sh -c para expandir la variable $PORT
+CMD sh -c "php -S 0.0.0.0:\${PORT:-8080} -t public"
